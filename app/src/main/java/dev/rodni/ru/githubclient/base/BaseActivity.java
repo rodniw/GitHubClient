@@ -1,13 +1,22 @@
 package dev.rodni.ru.githubclient.base;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.ViewGroup;
+
+import com.bluelinelabs.conductor.Conductor;
+import com.bluelinelabs.conductor.Controller;
+import com.bluelinelabs.conductor.ControllerChangeHandler;
+import com.bluelinelabs.conductor.Router;
 
 import java.util.UUID;
 
 import javax.inject.Inject;
 
+import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.di.Injector;
 import dev.rodni.ru.githubclient.di.ScreenInjector;
 
@@ -19,6 +28,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     ScreenInjector screenInjector;
 
     private String instanceId;
+    //Router for Conductors is the same as FragmentManager for Fragments
+    private Router router;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,7 +42,21 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         Injector.inject(this);
         super.onCreate(savedInstanceState);
+        setContentView(layoutRes());
+
+        ViewGroup screenContainer = findViewById(R.id.screen_container);
+        if (screenContainer == null) {
+            throw new NullPointerException("Activity must have a view with id: screen_container");
+        }
+
+        router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
+
+        //by this method we can get info about backstack changes
+        monitorBackStack();
     }
+
+    @LayoutRes
+    protected abstract int layoutRes();
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -53,5 +78,32 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public ScreenInjector getScreenInjector() {
         return screenInjector;
+    }
+
+    private void monitorBackStack() {
+        router.addChangeListener(new ControllerChangeHandler.ControllerChangeListener() {
+            @Override
+            public void onChangeStarted(
+                    @Nullable Controller to,
+                    @Nullable Controller from,
+                    boolean isPush,
+                    @NonNull ViewGroup container,
+                    @NonNull ControllerChangeHandler handler) {
+
+            }
+
+            @Override
+            public void onChangeCompleted(
+                    @Nullable Controller to,
+                    @Nullable Controller from,
+                    boolean isPush,
+                    @NonNull ViewGroup container,
+                    @NonNull ControllerChangeHandler handler) {
+                //if controller not going to use anymore we can clear its component
+                if (!isPush && from != null) {
+                    Injector.clearComponent(from);
+                }
+            }
+        });
     }
 }
