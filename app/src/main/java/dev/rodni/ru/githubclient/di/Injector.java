@@ -19,10 +19,10 @@ public class Injector {
     }
 
     public static void inject(Controller controller) {
-        //ScreenInjector.get(controller.getActivity()).inject(controller);
+        ScreenInjector.get(controller.getActivity()).inject(controller);
     }
 
     public static void clearComponent(Controller controller) {
-        //ScreenInjector.get(controller.getActivity()).clear(controller);
+        ScreenInjector.get(controller.getActivity()).clear(controller);
     }
 }
