@@ -2,5 +2,160 @@ package dev.rodni.ru.githubclient.base;
 
 import com.bluelinelabs.conductor.Controller;
 
+
 public abstract class BaseController extends Controller {
 }
+
+
+//SOME EDU INFO NOT FOR THE EXACT APP
+
+/*
+Conductor позиционируется как замена стандартным фрагментам.
+Основная идея обернуть View и дать доступ к методам жизненного цикла.
+Conductor имеет свой жизненный цикл, который сильно проще чем у фрагметов, но и в нём есть свои хитрости.
+
+Основные преимущества, которые даёт Conductor:
+
+Упрощение кода
+Транзакции выполняются мгновенно
+Возможность построить приложение на одной Activity
+Не ограничивает в выборе архитектуры приложения
+Легко встраиваемые анимации
+Отсутствие необходимости сохранять состояния между изменениями конфигураций
+
+Так же в коробке вы получите:
+
+Работа с бэкстеком
+Стандартные коллбеки активити легко доступны
+Несколько стандартных анимаций
+Привязка жизненного цикла к RxJava
+Быстрая интеграция с ViewPager
+
+to change controller the same as fragment transaction we need to execute this:
+
+      getRouter().pushController(RouterTransaction.with(new ConeController(conesCount)));
+
+to get to the previous controller do this:
+
+      @Override
+         public void onBackPressed() {
+             if (!router.handleBack()) {
+                 super.onBackPressed();
+             }
+         }
+
+to solve problem with closing with the last tap because of the backstack we need to do this:
+
+setPopsLastView с параметром false
+
+onAttach — вызывается при показе контроллера на экране
+onDetach — вызывается при удалении контроллера с экрана
+onDestroyView — вызывается при уничтожении вида привязанного к контроллеру
+onCreateView — вызывается при создании вида для контроллера
+onDestroy — вызывается перед тем как контроллер будет уничтожен
+
+Следующие методы вызываются в процессе жизненного цикла, но по факту не могут быть к нему отнесены. Порядок их вызовов может зависеть от анимации перехода. И опираться ни на что кроме обработки анимации в них не стоит.
+onChangeStarted — вызывается перед началом анимации
+onChangeEnded — вызывается по завершению анимации
+ */
+
+/*
+В конструктор мы передали параметр который должен быть наследником Controller и реализовывать интерфейс нашего слушателя.
+Запомнили его с помощью вызова метода setTargetController.
+
+При уходе с контроллера мы обновляем количество шишек в HomeController вызовом conesLeft(...) у слушателя.
+
+
+//File: ConeController.java
+public class ConeController extends Controller {
+    private int conesCount = 0;
+    private TextView textField;
+
+    public <T extends Controller & ConeListener> ConeController(int conesCount, T listener) {
+        this.conesCount = conesCount;
+        getArgs().putInt("conesCount", conesCount);
+        setTargetController(listener);
+    }
+
+    public ConeController(@Nullable Bundle args) {
+        super(args);
+        conesCount = args.getInt("conesCount");
+    }
+
+    @NonNull
+    @Override
+    protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
+        View view = inflater.inflate(R.layout.controller_cone, container, false);
+        textField = (TextView) view.findViewById(R.id.textField);
+
+        view.findViewById(R.id.collectConeButton)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (getTargetController() != null) {
+                            conesCount--;
+                            getArgs().putInt("conesCount", conesCount);
+                            update();
+                        }
+                    }
+                });
+        return view;
+    }
+
+    @Override
+    protected void onAttach(@NonNull View view) {
+        super.onAttach(view);
+        update();
+    }
+
+    @Override
+    public boolean handleBack() {
+        ((ConeListener) getTargetController()).conesLeft(conesCount);
+        return super.handleBack();
+    }
+
+    private void update() {
+        textField.setText("Cones: " + conesCount);
+    }
+
+    @Override
+    protected void onDestroyView(@NonNull View view) {
+        super.onDestroyView(view);
+        textField = null;
+    }
+
+    public interface ConeListener {
+        void conesLeft(int count);
+    }
+}
+
+//HomeController.java
+public class HomeController extends Controller implements ConeController.ConeListener {
+
+....
+
+    @NonNull
+    @Override
+    protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
+        View view = inflater.inflate(R.layout.controller_home, container, false);
+        tree = view.findViewById(R.id.tree);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isGrown) {
+                    getRouter().pushController(RouterTransaction.with(new ConeController(conesCount, HomeController.this)));
+                } else {
+                    isGrown = true;
+                    update();
+                }
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void conesLeft(int count) {
+        conesCount = count;
+    }
+ */
