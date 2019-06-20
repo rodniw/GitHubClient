@@ -10,14 +10,14 @@ import io.reactivex.Single;
 
 public class RepoRequester {
 
-    public final RepoService service;
+    private final RepoService service;
 
     @Inject
     RepoRequester(RepoService service) {
         this.service = service;
     }
 
-    Single<List<Repo>> getTrendingRepos() {
+    public Single<List<Repo>> getTrendingRepos() {
         return service.getTrendingRepos()
                 .map(TrendingReposResponse::repos);
     }

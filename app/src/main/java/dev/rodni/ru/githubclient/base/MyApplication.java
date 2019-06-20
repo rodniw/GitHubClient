@@ -4,7 +4,9 @@ import android.app.Application;
 
 import javax.inject.Inject;
 
+import dev.rodni.ru.githubclient.BuildConfig;
 import dev.rodni.ru.githubclient.di.ActivityInjector;
+import timber.log.Timber;
 
 public class MyApplication extends Application {
 
@@ -23,6 +25,10 @@ public class MyApplication extends Application {
         //and by this methos we can get our provider for activity injector if i understand that right
         //from dagger build classes
         component.inject(this);
+
+        if (BuildConfig.DEBUG) {
+            Timber.plant(new Timber.DebugTree());
+        }
 
     }
 
