@@ -15,7 +15,9 @@ import com.squareup.moshi.Moshi;
 @AutoValue
 public abstract class User {
 
-    public abstract long id();
+    //remember that we can use Long instead of long to check for null
+    //and in case of primitive type it can be simply 0
+    public abstract Long id();
 
     public abstract String login();
 
