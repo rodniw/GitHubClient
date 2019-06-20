@@ -3,9 +3,13 @@ package dev.rodni.ru.githubclient.home;
 import dagger.Subcomponent;
 import dagger.android.AndroidInjector;
 import dev.rodni.ru.githubclient.di.ActivityScope;
+import dev.rodni.ru.githubclient.ui.NavigationModule;
 
 @ActivityScope
-@Subcomponent
+@Subcomponent(modules = {
+        MainScreenBindingModule.class,
+        NavigationModule.class,
+})
 public interface MainActivityComponent extends AndroidInjector<MainActivity> {
 
     @Subcomponent.Builder

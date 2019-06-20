@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.di.Injector;
 import dev.rodni.ru.githubclient.di.ScreenInjector;
+import dev.rodni.ru.githubclient.ui.ScreenNavigator;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -26,6 +27,8 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Inject
     ScreenInjector screenInjector;
+    @Inject
+    ScreenNavigator screenNavigator;
 
     private String instanceId;
     //Router for Conductors is the same as FragmentManager for Fragments
@@ -50,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
-
+        screenNavigator.initWithRouter(router, initialScreen());
         //by this method we can get info about backstack changes
         monitorBackStack();
     }
@@ -58,10 +61,21 @@ public abstract class BaseActivity extends AppCompatActivity {
     @LayoutRes
     protected abstract int layoutRes();
 
+    //because in the future we need to give to all activities
+    //an opportunity to get their controllers
+    protected abstract Controller initialScreen();
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(INSTANCE_ID_KEY, instanceId);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (!screenNavigator.pop()) {
+            super.onBackPressed();
+        }
     }
 
     public String getInstanceId() {
@@ -71,6 +85,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        screenNavigator.clear();
         if (isFinishing()) {
             Injector.clearComponent(this);
         }
