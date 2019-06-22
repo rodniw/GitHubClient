@@ -1,5 +1,7 @@
 package dev.rodni.ru.githubclient.trending;
 
+import android.annotation.SuppressLint;
+
 import javax.inject.Inject;
 
 import dev.rodni.ru.githubclient.data.RepoRequester;
@@ -18,6 +20,7 @@ public class TrendingReposPresenter {
         loadRepos();
     }
 
+    @SuppressLint("CheckResult")
     private void loadRepos() {
         mRepoRequester.getTrendingRepos()
                 .doOnSubscribe(__ -> mViewModel.loadingUpdated().accept(true))
