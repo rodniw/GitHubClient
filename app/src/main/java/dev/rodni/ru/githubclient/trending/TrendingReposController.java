@@ -19,8 +19,8 @@ public class TrendingReposController extends BaseController {
     //we do not need this anymore after including seedInstance into MainActivityComponent
     //@Inject MainActivity mainActivity;
 
-    @Inject TrendingReposViewModel viewModel;
     @Inject TrendingReposPresenter presenter;
+    @Inject TrendingReposViewModel viewModel;
 
     @BindView(R.id.repo_list) RecyclerView repoList;
     @BindView(R.id.loading_indicator) View loadingView;
@@ -34,17 +34,17 @@ public class TrendingReposController extends BaseController {
 
     @Override
     protected Disposable[] subscriptions() {
-        return new Disposable[] {
+        return new Disposable[]{
                 viewModel.loading()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(loading -> {
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(loading -> {
                     loadingView.setVisibility(loading ? View.VISIBLE : View.GONE);
                     repoList.setVisibility(loading ? View.GONE : View.VISIBLE);
                     errorText.setVisibility(loading ? View.GONE : errorText.getVisibility());
                 }),
                 viewModel.repos()
                         .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(((RepoAdapter) Objects.requireNonNull(repoList.getAdapter()))::setData),
+                        .subscribe(((RepoAdapter)repoList.getAdapter())::setData),
                 viewModel.error()
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(errorRes -> {

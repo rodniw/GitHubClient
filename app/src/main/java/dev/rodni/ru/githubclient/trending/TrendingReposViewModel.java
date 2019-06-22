@@ -10,6 +10,7 @@ import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.di.ScreenScope;
 import dev.rodni.ru.githubclient.model.Repo;
 import io.reactivex.Observable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
@@ -19,12 +20,14 @@ class TrendingReposViewModel {
     //RxPM -> Relays are RxJava types which are both an Observable and a Consumer.
     //BehaviorRelay – хранит последнее полученное значение и рассылает его каждый раз при подписке.
     //Лучше всего подходит для хранения и изменения состояний.
+    //private final BehaviorRelay<List<Repo>> reposRelay = BehaviorRelay.create();
     private final BehaviorRelay<List<Repo>> reposRelay = BehaviorRelay.create();
     private final BehaviorRelay<Integer> errorRelay = BehaviorRelay.create();
     private final BehaviorRelay<Boolean> loadingRelay = BehaviorRelay.create();
 
     @Inject
-    public TrendingReposViewModel() {
+    TrendingReposViewModel() {
+
     }
 
     Observable<Boolean> loading() {
