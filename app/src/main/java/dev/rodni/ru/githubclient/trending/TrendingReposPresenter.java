@@ -6,9 +6,10 @@ import javax.inject.Inject;
 
 import dev.rodni.ru.githubclient.data.RepoRequester;
 import dev.rodni.ru.githubclient.di.ScreenScope;
+import dev.rodni.ru.githubclient.model.Repo;
 
 @ScreenScope
-public class TrendingReposPresenter {
+public class TrendingReposPresenter implements RepoAdapter.RepoClickedListener {
 
     private final TrendingReposViewModel mViewModel;
     private final RepoRequester mRepoRequester;
@@ -26,5 +27,10 @@ public class TrendingReposPresenter {
                 .doOnSubscribe(__ -> mViewModel.loadingUpdated().accept(true))
                 .doOnEvent((d, t) -> mViewModel.loadingUpdated().accept(false))
                 .subscribe(mViewModel.reposUpdated(), mViewModel.onError());
+    }
+
+    @Override
+    public void onRepoClicked(Repo repo) {
+
     }
 }
