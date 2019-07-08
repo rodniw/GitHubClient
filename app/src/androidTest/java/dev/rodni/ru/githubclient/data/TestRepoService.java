@@ -3,11 +3,13 @@ package dev.rodni.ru.githubclient.data;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import dev.rodni.ru.githubclient.model.Contributor;
 import dev.rodni.ru.githubclient.model.Repo;
 import io.reactivex.Single;
 
+@Singleton
 public class TestRepoService implements RepoService {
 
     @Inject
