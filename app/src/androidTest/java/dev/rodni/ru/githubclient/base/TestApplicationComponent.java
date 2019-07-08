@@ -5,6 +5,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 import dev.rodni.ru.githubclient.data.TestRepoServiceModule;
 import dev.rodni.ru.githubclient.networking.ServiceModule;
+import dev.rodni.ru.githubclient.trending.TrendingReposControllerTest;
 import dev.rodni.ru.githubclient.ui.NavigationModule;
 
 @Singleton
@@ -16,4 +17,7 @@ import dev.rodni.ru.githubclient.ui.NavigationModule;
         NavigationModule.class,
 })
 public interface TestApplicationComponent extends ApplicationComponent {
+
+    void inject(TrendingReposControllerTest trendingReposControllerTest);
+
 }
