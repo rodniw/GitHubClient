@@ -1,6 +1,7 @@
 package dev.rodni.ru.githubclient.base;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
@@ -22,6 +23,13 @@ public abstract class BaseController extends Controller {
 
     private boolean injected = false;
     private Unbinder unbinder;
+
+    public BaseController() {
+    }
+
+    public BaseController(Bundle bundle) {
+        super(bundle);
+    }
 
     @Override
     protected void onContextAvailable(@NonNull Context context) {
