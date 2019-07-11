@@ -1,10 +1,8 @@
 package dev.rodni.ru.githubclient.trending;
 
-import android.annotation.SuppressLint;
-
 import javax.inject.Inject;
 
-import dev.rodni.ru.githubclient.data.RepoRequester;
+import dev.rodni.ru.githubclient.data.RepoRepository;
 import dev.rodni.ru.githubclient.di.ScreenScope;
 import dev.rodni.ru.githubclient.model.Repo;
 
@@ -12,17 +10,17 @@ import dev.rodni.ru.githubclient.model.Repo;
 public class TrendingReposPresenter implements RepoAdapter.RepoClickedListener {
 
     private final TrendingReposViewModel viewModel;
-    private final RepoRequester repoRequester;
+    private RepoRepository repoRepository;
 
     @Inject
-    TrendingReposPresenter(TrendingReposViewModel viewModel, RepoRequester repoRequester) {
+    TrendingReposPresenter(TrendingReposViewModel viewModel, RepoRepository repoRepository) {
         this.viewModel = viewModel;
-        this.repoRequester = repoRequester;
+        this.repoRepository = repoRepository;
         loadRepos();
     }
 
     private void loadRepos() {
-        repoRequester.getTrendingRepos()
+        repoRepository.getTrendingRepos()
                 .doOnSubscribe(__ -> viewModel.loadingUpdated().accept(true))
                 .doOnEvent((d, t) -> viewModel.loadingUpdated().accept(false))
                 .subscribe(viewModel.reposUpdated(), viewModel.onError());
