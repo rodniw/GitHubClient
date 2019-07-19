@@ -29,7 +29,7 @@ public class RepoDetailsViewModelTest {
     }
 
     @Test
-    public void details() {
+    public void details() throws Exception {
         viewModel.processRepo().accept(repo);
 
         viewModel.details().test().assertValue(
@@ -44,7 +44,7 @@ public class RepoDetailsViewModelTest {
     }
 
     @Test
-    public void contributors() {
+    public void contributors() throws Exception {
         viewModel.processContributors().accept(contributors);
 
         viewModel.contributors().test().assertValue(
@@ -56,7 +56,7 @@ public class RepoDetailsViewModelTest {
     }
 
     @Test
-    public void detailsError() {
+    public void detailsError() throws Exception {
         viewModel.detailsError().accept(new IOException());
 
         viewModel.details().test().assertValue(
@@ -68,7 +68,7 @@ public class RepoDetailsViewModelTest {
     }
 
     @Test
-    public void contributorsError() {
+    public void contributorsError() throws Exception {
         viewModel.contributorsError().accept(new IOException());
 
         viewModel.contributors().test().assertValue(
