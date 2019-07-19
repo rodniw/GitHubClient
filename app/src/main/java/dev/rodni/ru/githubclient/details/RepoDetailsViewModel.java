@@ -5,7 +5,6 @@ import com.jakewharton.rxrelay2.BehaviorRelay;
 import org.threeten.bp.format.DateTimeFormatter;
 
 import java.util.List;
-import java.util.function.Consumer;
 
 import javax.inject.Inject;
 
@@ -14,6 +13,7 @@ import dev.rodni.ru.githubclient.di.ScreenScope;
 import dev.rodni.ru.githubclient.model.Contributor;
 import dev.rodni.ru.githubclient.model.Repo;
 import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 import timber.log.Timber;
 
 @ScreenScope

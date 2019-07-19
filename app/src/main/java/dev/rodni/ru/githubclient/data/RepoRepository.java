@@ -1,23 +1,27 @@
 package dev.rodni.ru.githubclient.data;
 
-import android.annotation.SuppressLint;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import dev.rodni.ru.githubclient.model.Contributor;
 import dev.rodni.ru.githubclient.model.Repo;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
+import io.reactivex.schedulers.Schedulers;
 
 @Singleton
 public class RepoRepository {
 
     private final Provider<RepoRequester> repoRequesterProvider;
     private final List<Repo> cachedTrendingRepos = new ArrayList<>();
+    //for every url we have its own list of contributors
+    private final Map<String, List<Contributor>> cachedContributors = new HashMap<>();
 
     @Inject
     public RepoRepository(Provider<RepoRequester> repoRequesterProvider) {
@@ -26,12 +30,35 @@ public class RepoRepository {
 
     public Single<List<Repo>> getTrendingRepos() {
         return Maybe.concat(cachedTrendingRepos(), apiTrendingRepos())
-                .firstOrError();
+                .firstOrError()
+                .subscribeOn(Schedulers.io());
     }
 
     public Single<Repo> getRepo(String repoOwner, String repoName) {
         return Maybe.concat(cachedRepo(repoOwner, repoName), apiRepo(repoOwner, repoName))
-                .firstOrError();
+                .firstOrError()
+                .subscribeOn(Schedulers.io());
+    }
+
+    public Single<List<Contributor>> getContributors(String url) {
+        return Maybe.concat(cachedContributors(url), apiContributors(url))
+                .firstOrError()
+                .subscribeOn(Schedulers.io());
+    }
+
+    private Maybe<List<Contributor>> cachedContributors(String url) {
+        return Maybe.create(e -> {
+            if (cachedContributors.containsKey(url)) {
+                e.onSuccess(cachedContributors.get(url));
+            }
+            e.onComplete();
+        });
+    }
+
+    private Maybe<List<Contributor>> apiContributors(String url) {
+        return repoRequesterProvider.get().getContributors(url)
+                .doOnSuccess(contributors -> cachedContributors.put(url, contributors))
+                .toMaybe();
     }
 
     private Maybe<Repo> cachedRepo(String repoOwner, String repoName) {
