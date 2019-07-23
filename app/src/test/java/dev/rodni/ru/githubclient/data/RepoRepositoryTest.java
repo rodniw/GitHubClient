@@ -12,13 +12,20 @@ import javax.inject.Provider;
 
 import dev.rodni.ru.githubclient.model.Repo;
 import dev.rodni.ru.githubclient.testutils.TestUtils;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
+import io.reactivex.plugins.RxJavaPlugins;
+import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 public class RepoRepositoryTest {
+
+    //static {
+    //    RxJavaPlugins.setIoSchedulerHandler(scheduler -> Schedulers.trampoline());
+    //}
 
     @Mock Provider<RepoRequester> repoRequesterProvider;
     @Mock RepoRequester repoRequester;
@@ -33,12 +40,12 @@ public class RepoRepositoryTest {
         MockitoAnnotations.initMocks(this);
         when(repoRequesterProvider.get()).thenReturn(repoRequester);
 
-        trendingReposResponse = TestUtils.loadJson("mock/get_trending_repos.json", TrendingReposResponse.class);
+        trendingReposResponse = TestUtils.loadJson("mock/search/get_trending_repos.json", TrendingReposResponse.class);
         when(repoRequester.getTrendingRepos()).thenReturn(Single.just(trendingReposResponse.repos()));
 
         rxJavaRepo =  trendingReposResponse.repos().get(0);
         otherRepo = trendingReposResponse.repos().get(1);
-        repository = new RepoRepository(repoRequesterProvider);
+        repository = new RepoRepository(repoRequesterProvider, Schedulers.trampoline());
     }
 
     @Test
