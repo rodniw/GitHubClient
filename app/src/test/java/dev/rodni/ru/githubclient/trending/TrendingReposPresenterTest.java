@@ -14,6 +14,7 @@ import dev.rodni.ru.githubclient.data.RepoRepository;
 import dev.rodni.ru.githubclient.data.TrendingReposResponse;
 import dev.rodni.ru.githubclient.model.Repo;
 import dev.rodni.ru.githubclient.testutils.TestUtils;
+import dev.rodni.ru.githubclient.ui.ScreenNavigator;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 
@@ -29,6 +30,7 @@ public class TrendingReposPresenterTest {
     @Mock Consumer<Throwable> onErrorConsumer;
     @Mock Consumer<List<Repo>> onSuccessConsumer;
     @Mock Consumer<Boolean> loadingConsumer;
+    @Mock ScreenNavigator screenNavigator;
 
     private TrendingReposPresenter presenter;
 
@@ -82,7 +84,12 @@ public class TrendingReposPresenterTest {
 
     @Test
     public void onRepoClicked() throws Exception {
-        //TODO
+        Repo repo = TestUtils.loadJson("mock/repos/get_repo.json", Repo.class);
+        setUpSuccess();
+        initializePresenter();
+        presenter.onRepoClicked(repo);
+
+        verify(screenNavigator).goToRepoDetails(repo.owner().login(), repo.name());
     }
 
     private List<Repo> setUpSuccess() {
@@ -102,6 +109,6 @@ public class TrendingReposPresenterTest {
     }
 
     private void initializePresenter() {
-        presenter = new TrendingReposPresenter(viewModel, repoRepository);
+        presenter = new TrendingReposPresenter(viewModel, repoRepository, screenNavigator);
     }
 }
