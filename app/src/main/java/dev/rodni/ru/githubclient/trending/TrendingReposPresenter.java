@@ -10,18 +10,17 @@ import dev.rodni.ru.githubclient.model.Repo;
 import dev.rodni.ru.githubclient.ui.ScreenNavigator;
 
 @ScreenScope
-public class TrendingReposPresenter implements RepoAdapter.RepoClickedListener {
+class TrendingReposPresenter implements RepoAdapter.RepoClickedListener {
 
     private final TrendingReposViewModel viewModel;
-    private RepoRepository repoRepository;
-    private ScreenNavigator screenNavigator;
+    private final RepoRepository repoRepository;
+    private final ScreenNavigator screenNavigator;
 
     @Inject
     TrendingReposPresenter(
             TrendingReposViewModel viewModel,
             RepoRepository repoRepository,
-            ScreenNavigator screenNavigator
-    ) {
+            ScreenNavigator screenNavigator) {
         this.viewModel = viewModel;
         this.repoRepository = repoRepository;
         this.screenNavigator = screenNavigator;

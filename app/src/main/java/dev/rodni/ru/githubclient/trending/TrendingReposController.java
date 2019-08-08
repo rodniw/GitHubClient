@@ -16,8 +16,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
 public class TrendingReposController extends BaseController {
-    //we do not need this anymore after including seedInstance into MainActivityComponent
-    //@Inject MainActivity mainActivity;
 
     @Inject TrendingReposPresenter presenter;
     @Inject TrendingReposViewModel viewModel;

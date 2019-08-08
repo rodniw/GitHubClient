@@ -17,10 +17,6 @@ import timber.log.Timber;
 @ScreenScope
 class TrendingReposViewModel {
 
-    //RxPM -> Relays are RxJava types which are both an Observable and a Consumer.
-    //BehaviorRelay – хранит последнее полученное значение и рассылает его каждый раз при подписке.
-    //Лучше всего подходит для хранения и изменения состояний.
-    //private final BehaviorRelay<List<Repo>> reposRelay = BehaviorRelay.create();
     private final BehaviorRelay<List<Repo>> reposRelay = BehaviorRelay.create();
     private final BehaviorRelay<Integer> errorRelay = BehaviorRelay.create();
     private final BehaviorRelay<Boolean> loadingRelay = BehaviorRelay.create();

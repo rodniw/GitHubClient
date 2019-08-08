@@ -7,7 +7,6 @@ import com.bluelinelabs.conductor.Controller;
 public class Injector {
 
     private Injector() {
-
     }
 
     public static void inject(Activity activity) {
@@ -26,3 +25,4 @@ public class Injector {
         ScreenInjector.get(controller.getActivity()).clear(controller);
     }
 }
+

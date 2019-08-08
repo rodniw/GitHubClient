@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import dev.rodni.ru.githubclient.details.RepoDetailsController;
 import dev.rodni.ru.githubclient.di.ActivityScope;
 
-@ActivityScope
 public class DefaultScreenNavigator implements ScreenNavigator {
 
     private Router router;
@@ -19,7 +18,6 @@ public class DefaultScreenNavigator implements ScreenNavigator {
     public DefaultScreenNavigator() {
 
     }
-
     //SOLID
     //if its the first time we need it to give a root screen
     //in rotation that condition will be false so we will not execute transaction again

@@ -61,8 +61,7 @@ class RepoAdapter extends RecyclerView.Adapter<RepoAdapter.RepoViewHolder> {
 
     static final class RepoViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_repo_name)
-        TextView repoNameText;
+        @BindView(R.id.tv_repo_name) TextView repoNameText;
         @BindView(R.id.tv_repo_description) TextView repoDescriptionText;
         @BindView(R.id.tv_fork_count) TextView forkCountText;
         @BindView(R.id.tv_star_count) TextView starCountText;
