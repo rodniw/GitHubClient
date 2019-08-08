@@ -11,14 +11,13 @@ import dev.rodni.ru.githubclient.di.ScreenScope;
 @ScreenScope
 class RepoDetailsPresenter {
 
-    @SuppressLint("CheckResult" )
+    @SuppressLint("CheckResult")
     @Inject
-    public RepoDetailsPresenter(
+    RepoDetailsPresenter(
             @Named("repo_owner") String repoOwner,
             @Named("repo_name") String repoName,
             RepoRepository repoRepository,
-            RepoDetailsViewModel viewModel
-    ) {
+            RepoDetailsViewModel viewModel) {
         repoRepository.getRepo(repoOwner, repoName)
                 .doOnSuccess(viewModel.processRepo())
                 .doOnError(viewModel.detailsError())

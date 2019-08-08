@@ -28,10 +28,8 @@ public class RepoDetailsController extends BaseController {
         return new RepoDetailsController(bundle);
     }
 
-    @Inject
-    RepoDetailsViewModel viewModel;
-    @Inject
-    RepoDetailsPresenter presenter;
+    @Inject RepoDetailsViewModel viewModel;
+    @Inject RepoDetailsPresenter presenter;
 
     @BindView(R.id.tv_repo_name) TextView repoNameText;
     @BindView(R.id.tv_repo_description) TextView repoDescriptionText;
@@ -51,7 +49,7 @@ public class RepoDetailsController extends BaseController {
     @Override
     protected void onViewBound(View view) {
         contributorList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        contributorList.setAdapter(new ContributorAdaper());
+        contributorList.setAdapter(new ContributorAdapter());
     }
 
     @Override
@@ -77,7 +75,7 @@ public class RepoDetailsController extends BaseController {
                         errorText.setVisibility(details.isSuccess() ? View.GONE : View.VISIBLE);
                         repoNameText.setText(details.name());
                         repoDescriptionText.setText(details.description());
-                        createdDateText.setText(details.creationDate());
+                        createdDateText.setText(details.createdDate());
                         updatedDateText.setText(details.updatedDate());
                     }
                 }),
@@ -95,6 +93,7 @@ public class RepoDetailsController extends BaseController {
                         contributorsErrorText.setVisibility(contributorsDetails.isSuccess() ? View.GONE : View.VISIBLE);
                         if (contributorsDetails.isSuccess()) {
                             contributorsErrorText.setText(null);
+                            ((ContributorAdapter) contributorList.getAdapter()).setData(contributorsDetails.contributors());
                         } else {
                             //noinspection ConstantConditions
                             contributorsErrorText.setText(contributorsDetails.errorRes());
@@ -109,3 +108,4 @@ public class RepoDetailsController extends BaseController {
         return R.layout.screen_repo_details;
     }
 }
+

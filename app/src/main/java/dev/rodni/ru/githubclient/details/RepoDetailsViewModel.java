@@ -44,7 +44,7 @@ class RepoDetailsViewModel {
                         .loading(false)
                         .name(repo.name())
                         .description(repo.description())
-                        .creationDate(repo.createdDate().format(DATE_FORMATTER))
+                        .createdDate(repo.createdDate().format(DATE_FORMATTER))
                         .updatedDate(repo.updatedDate().format(DATE_FORMATTER))
                         .build()
         );
@@ -55,8 +55,7 @@ class RepoDetailsViewModel {
                 ContributorState.builder()
                         .loading(false)
                         .contributors(contributors)
-                        .build()
-        );
+                        .build());
     }
 
     Consumer<Throwable> detailsError() {
@@ -64,23 +63,21 @@ class RepoDetailsViewModel {
             Timber.e(throwable, "Error loading repo details");
             detailStateRelay.accept(
                     RepoDetailState.builder()
-                    .loading(false)
-                    .errorRes(R.string.api_error_single_repo)
-                    .build()
+                            .loading(false)
+                            .errorRes(R.string.api_error_single_repo)
+                            .build()
             );
         };
     }
 
     Consumer<Throwable> contributorsError() {
         return throwable -> {
-            Timber.e(throwable, "Error loading repo details");
+            Timber.e(throwable, "Error loading contributors");
             contributorStateRelay.accept(
                     ContributorState.builder()
                             .loading(false)
                             .errorRes(R.string.api_error_contributors)
-                            .build()
-            );
+                            .build());
         };
     }
-
 }

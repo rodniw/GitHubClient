@@ -16,7 +16,7 @@ abstract class RepoDetailState {
     abstract String description();
 
     @Nullable
-    abstract String creationDate();
+    abstract String createdDate();
 
     @Nullable
     abstract String updatedDate();
@@ -41,7 +41,7 @@ abstract class RepoDetailState {
 
         abstract Builder description(String description);
 
-        abstract Builder creationDate(String creationDate);
+        abstract Builder createdDate(String createdDate);
 
         abstract Builder updatedDate(String updatedDate);
 

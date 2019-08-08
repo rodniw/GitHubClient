@@ -19,11 +19,11 @@ import butterknife.ButterKnife;
 import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.model.Contributor;
 
-class ContributorAdaper extends RecyclerView.Adapter<ContributorAdaper.ContributorViewHolder>{
+class ContributorAdapter extends RecyclerView.Adapter<ContributorAdapter.ContributorViewHolder>{
 
     private final List<Contributor> data = new ArrayList<>();
 
-    public ContributorAdaper() {
+    public ContributorAdapter() {
         setHasStableIds(true);
     }
 

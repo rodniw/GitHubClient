@@ -21,16 +21,14 @@ import io.reactivex.schedulers.Schedulers;
 public class RepoRepository {
 
     private final Provider<RepoRequester> repoRequesterProvider;
-    private Scheduler scheduler;
+    private final Scheduler scheduler;
     private final List<Repo> cachedTrendingRepos = new ArrayList<>();
-    //for every url we have its own list of contributors
     private final Map<String, List<Contributor>> cachedContributors = new HashMap<>();
 
     @Inject
-    public RepoRepository(
+    RepoRepository(
             Provider<RepoRequester> repoRequesterProvider,
-            @Named("network_scheduler") Scheduler scheduler
-            ) {
+            @Named("network_scheduler") Scheduler scheduler) {
         this.repoRequesterProvider = repoRequesterProvider;
         this.scheduler = scheduler;
     }
@@ -75,7 +73,7 @@ public class RepoRepository {
 
     private Maybe<Repo> cachedRepo(String repoOwner, String repoName) {
         return Maybe.create(e -> {
-            for (Repo cachedRepo: cachedTrendingRepos) {
+            for (Repo cachedRepo : cachedTrendingRepos) {
                 if (cachedRepo.owner().login().equals(repoOwner) && cachedRepo.name().equals(repoName)) {
                     e.onSuccess(cachedRepo);
                     break;

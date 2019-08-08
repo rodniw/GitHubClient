@@ -20,5 +20,4 @@ public interface RepoService {
 
     @GET
     Single<List<Contributor>> getContributors(@Url String url);
-
 }
