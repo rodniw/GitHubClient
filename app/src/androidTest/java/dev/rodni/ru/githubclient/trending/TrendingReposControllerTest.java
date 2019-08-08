@@ -15,6 +15,7 @@ import javax.inject.Inject;
 
 import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.base.TestApplication;
+import dev.rodni.ru.githubclient.data.RepoService;
 import dev.rodni.ru.githubclient.data.TestRepoService;
 import dev.rodni.ru.githubclient.home.MainActivity;
 import dev.rodni.ru.githubclient.test.ControllerTest;
@@ -31,20 +32,20 @@ public class TrendingReposControllerTest extends ControllerTest {
 
     @Test
     public void loadRepos() {
-        repoService.setSendError(false);
+        repoService.clearErrorFlags();
         launch();
 
         onView(withId(R.id.loading_indicator)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
         onView(withId(R.id.tv_error)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
-        onView(withId(R.id.repo_list)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+        onView(withId(R.id.repo_list)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
 
         onView(allOf(withId(R.id.tv_repo_name), withText("RxJava")))
-                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));
+                .check(matches(withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)));
     }
 
     @Test
     public void loadReposError() {
-        repoService.setSendError(true);
+        repoService.setErrorFlags(TestRepoService.FLAG_TRENDING_REPOS);
         launch();
 
         onView(withId(R.id.loading_indicator)).check(matches(withEffectiveVisibility(ViewMatchers.Visibility.GONE)));

@@ -23,6 +23,8 @@ public class ControllerTestRule<T extends Activity> extends ActivityTestRule<T> 
     }
 
     public void clearState() {
+        repoService.clearErrorFlags();
+        repoService.clearHoldFlags();
         repoRepository.clearCache();
     }
 }
