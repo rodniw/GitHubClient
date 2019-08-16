@@ -13,6 +13,7 @@ import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.data.TestRepoService;
 import dev.rodni.ru.githubclient.test.ControllerTest;
 
+//TODO: refactor test. They are failed because of those settings.
 //test runner class
 @RunWith(AndroidJUnit4.class)
 public class RepoDetailsControllerTest extends ControllerTest {
