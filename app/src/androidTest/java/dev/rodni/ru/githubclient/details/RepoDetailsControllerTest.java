@@ -13,7 +13,6 @@ import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.data.TestRepoService;
 import dev.rodni.ru.githubclient.test.ControllerTest;
 
-//TODO: refactor test. They are failed because of those settings.
 //test runner class
 @RunWith(AndroidJUnit4.class)
 public class RepoDetailsControllerTest extends ControllerTest {
@@ -36,8 +35,8 @@ public class RepoDetailsControllerTest extends ControllerTest {
                 .verifyLoadingVisibility(ViewMatchers.Visibility.GONE)
                 .verifyName("RxJava")
                 .verifyDescription("RxJava – Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.")
-                .verifyCreationDate("Jan 08, 2013")
-                .verifyUpdatedDate("Oct 06, 2017");
+                .verifyCreationDate("янв. 08, 2013")
+                .verifyUpdatedDate("окт. 06, 2017");
     }
 
     //test repo error case

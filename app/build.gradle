@@ -34,7 +34,7 @@ dependencies {
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
-    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.3.0'
+    implementation 'com.squareup.retrofit2:adapter-rxjava2:2.5.0'
     implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
     implementation "com.squareup.moshi:moshi:$moshiVersion"
     annotationProcessor "com.ryanharter.auto.value:auto-value-moshi:$autoValueMoshiVersion"
@@ -63,6 +63,23 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 }
+
+def mockCopySpec = copySpec {
+    from rootProject.file('app/')
+    include 'mock/'
+}
+
+//we iterate and copy our mock folder to tests folders using mockCopySpec
+task copyMock(type: Copy) {
+    ['src/test/resources', 'src/androidTest/resources'].each { dest ->
+        copy {
+            with mockCopySpec
+            into dest
+        }
+    }
+}
+
+build.finalizedBy(copyMock)

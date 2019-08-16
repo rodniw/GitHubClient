@@ -37,7 +37,7 @@ public class RepoDetailsViewModelTest {
                         .loading(false)
                         .name("RxJava")
                         .description("RxJava – Reactive Extensions for the JVM – a library for composing asynchronous and event-based programs using observable sequences for the Java VM.")
-                        .creationDate("янв 08, 2013")
+                        .createdDate("янв 08, 2013")
                         .updatedDate("окт 06, 2017")
                         .build()
         );
