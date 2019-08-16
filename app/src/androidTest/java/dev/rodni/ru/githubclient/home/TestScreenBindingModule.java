@@ -18,11 +18,13 @@ import dev.rodni.ru.githubclient.trending.TrendingReposController;
 })
 public abstract class TestScreenBindingModule {
 
+    //binding all the repos screen into our activity
     @Binds
     @IntoMap
     @ControllerKey(TrendingReposController.class)
     abstract AndroidInjector.Factory<? extends Controller> bindTrendingReposInjector(TrendingReposComponent.Builder builder);
 
+    //binding repo details screen
     @Binds
     @IntoMap
     @ControllerKey(RepoDetailsController.class)
