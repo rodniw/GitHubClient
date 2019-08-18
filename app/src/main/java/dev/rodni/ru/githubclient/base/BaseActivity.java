@@ -19,6 +19,7 @@ import javax.inject.Inject;
 import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.di.Injector;
 import dev.rodni.ru.githubclient.di.ScreenInjector;
+import dev.rodni.ru.githubclient.ui.ActivityViewInterceptor;
 import dev.rodni.ru.githubclient.ui.ScreenNavigator;
 
 public abstract class BaseActivity extends AppCompatActivity {
@@ -29,6 +30,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     ScreenInjector screenInjector;
     @Inject
     ScreenNavigator screenNavigator;
+    @Inject
+    ActivityViewInterceptor activityViewInterceptor;
 
     private String instanceId;
     //Router for Conductors is the same as FragmentManager for Fragments
@@ -45,7 +48,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         Injector.inject(this);
         super.onCreate(savedInstanceState);
-        setContentView(layoutRes());
+
+        //setting the view by activity interceptor
+        activityViewInterceptor.setContentView(this, layoutRes());
 
         ViewGroup screenContainer = findViewById(R.id.screen_container);
         if (screenContainer == null) {
@@ -89,6 +94,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isFinishing()) {
             Injector.clearComponent(this);
         }
+
+        //clear method from our framework
+        activityViewInterceptor.clear();
     }
 
     public ScreenInjector getScreenInjector() {

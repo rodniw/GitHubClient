@@ -1,4 +1,4 @@
-package dev.rodni.ru.githubclient.networking;
+package dev.rodni.ru.githubclient.zzz;
 
 import javax.inject.Named;
 import javax.inject.Singleton;

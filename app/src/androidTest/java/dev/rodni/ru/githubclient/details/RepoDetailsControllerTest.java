@@ -82,7 +82,7 @@ public class RepoDetailsControllerTest extends ControllerTest {
                 .verifyErrorVisibility(ViewMatchers.Visibility.GONE);
     }
 
-    //test ui when loading repo
+    //test dev.rodni.ru.githubclient.ui when loading repo
     @Test
     public void loadingRepo() {
         repoService.setHoldFlags(TestRepoService.FLAG_GET_REPO);
@@ -91,7 +91,7 @@ public class RepoDetailsControllerTest extends ControllerTest {
                 .verifyLoadingVisibility(ViewMatchers.Visibility.VISIBLE);
     }
 
-    //test ui when loading contributors
+    //test dev.rodni.ru.githubclient.ui when loading contributors
     @Test
     public void loadingContributors() {
         repoService.setHoldFlags(TestRepoService.FLAG_GET_CONTRIBUTORS);
