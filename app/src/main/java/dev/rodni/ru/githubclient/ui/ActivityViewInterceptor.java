@@ -11,9 +11,11 @@ public interface ActivityViewInterceptor {
     void clear();
 
     //the default implementation of the interface
+    //implementation that will be used in release build
     ActivityViewInterceptor DEFAULT = new ActivityViewInterceptor() {
         @Override
         public void setContentView(Activity activity, int layoutRes) {
+            //normal activity setContentView call
             activity.setContentView(layoutRes);
         }
 

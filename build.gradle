@@ -7,7 +7,7 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.1'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -30,7 +30,7 @@ ext {
     supportLibraryVersion = '28.0.0'
     daggerVersion = '2.11'
     retrofitVersion = '2.3.0'
-    threeTenAbpVersion = '1.1.0'
+    threeTenAbpVersion = '1.2.1'
     moshiVersion = '1.5.0'
     autoValueVersion = '1.5.1'
     autoValueMoshiVersion = '0.4.3'
