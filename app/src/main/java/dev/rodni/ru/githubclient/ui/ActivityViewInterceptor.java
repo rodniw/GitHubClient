@@ -1,7 +1,8 @@
 package dev.rodni.ru.githubclient.ui;
 
 import android.app.Activity;
-import android.support.annotation.LayoutRes;
+
+import androidx.annotation.LayoutRes;
 
 public interface ActivityViewInterceptor {
 

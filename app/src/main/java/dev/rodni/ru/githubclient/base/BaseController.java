@@ -2,11 +2,12 @@ package dev.rodni.ru.githubclient.base;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 
 import com.bluelinelabs.conductor.Controller;
 
@@ -15,7 +16,6 @@ import butterknife.Unbinder;
 import dev.rodni.ru.githubclient.di.Injector;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
-
 
 public abstract class BaseController extends Controller {
 

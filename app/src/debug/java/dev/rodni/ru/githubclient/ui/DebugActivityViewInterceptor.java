@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 
-import com.jakewharton.rxbinding2.widget.RxCompoundButton;
+import com.jakewharton.rxbinding3.widget.RxCompoundButton;
 
 import javax.inject.Inject;
 
