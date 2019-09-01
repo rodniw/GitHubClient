@@ -14,6 +14,7 @@ import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.ControllerChangeHandler;
 import com.bluelinelabs.conductor.Router;
 
+import java.util.Set;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -21,6 +22,7 @@ import javax.inject.Inject;
 import dev.rodni.ru.githubclient.R;
 import dev.rodni.ru.githubclient.di.Injector;
 import dev.rodni.ru.githubclient.di.ScreenInjector;
+import dev.rodni.ru.githubclient.lifecycle.ActivityLifecycleTask;
 import dev.rodni.ru.githubclient.ui.ActivityViewInterceptor;
 import dev.rodni.ru.githubclient.ui.ScreenNavigator;
 
@@ -34,6 +36,8 @@ public abstract class BaseActivity extends AppCompatActivity {
     ScreenNavigator screenNavigator;
     @Inject
     ActivityViewInterceptor activityViewInterceptor;
+    @Inject
+    Set<ActivityLifecycleTask> activityLifecycleTasks;
 
     private String instanceId;
     //Router for Conductors is the same as FragmentManager for Fragments
@@ -63,6 +67,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         screenNavigator.initWithRouter(router, initialScreen());
         //by this method we can get info about backstack changes
         monitorBackStack();
+
+        for (ActivityLifecycleTask task : activityLifecycleTasks) {
+            task.onCreate(this);
+        }
     }
 
     @LayoutRes
@@ -90,6 +98,38 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        for (ActivityLifecycleTask task : activityLifecycleTasks) {
+            task.onStart(this);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        for (ActivityLifecycleTask task : activityLifecycleTasks) {
+            task.onResume(this);
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        for (ActivityLifecycleTask task : activityLifecycleTasks) {
+            task.onPause(this);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        for (ActivityLifecycleTask task : activityLifecycleTasks) {
+            task.onStop(this);
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         screenNavigator.clear();
@@ -99,6 +139,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         //clear method from our framework
         activityViewInterceptor.clear();
+
+        for (ActivityLifecycleTask task : activityLifecycleTasks) {
+            task.onDestroy(this);
+        }
     }
 
     public ScreenInjector getScreenInjector() {
