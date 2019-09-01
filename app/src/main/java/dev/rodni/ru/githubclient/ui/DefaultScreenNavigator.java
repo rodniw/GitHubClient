@@ -1,5 +1,7 @@
 package dev.rodni.ru.githubclient.ui;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bluelinelabs.conductor.Controller;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
@@ -9,8 +11,11 @@ import javax.inject.Inject;
 
 import dev.rodni.ru.githubclient.details.RepoDetailsController;
 import dev.rodni.ru.githubclient.di.ActivityScope;
+import dev.rodni.ru.githubclient.lifecycle.ActivityLifecycleTask;
 
-public class DefaultScreenNavigator implements ScreenNavigator {
+//scope moved here from the module to satisfy two deps
+@ActivityScope
+public class DefaultScreenNavigator extends ActivityLifecycleTask implements ScreenNavigator {
 
     private Router router;
 
@@ -18,11 +23,20 @@ public class DefaultScreenNavigator implements ScreenNavigator {
     public DefaultScreenNavigator() {
 
     }
+
+    //in the oncreate i check that an activity implements router provider interface
+    @Override
+    public void onCreate(AppCompatActivity activity) {
+        if (!(activity instanceof RouterProvider)) {
+            throw new IllegalArgumentException("Activity must implements RouterProvider interface");
+        }
+        initWithRouter(((RouterProvider) activity).getRouter(), ((RouterProvider) activity).initialScreen());
+    }
+
     //SOLID
     //if its the first time we need it to give a root screen
     //in rotation that condition will be false so we will not execute transaction again
-    @Override
-    public void initWithRouter(Router router, Controller rootScreen) {
+    void initWithRouter(Router router, Controller rootScreen) {
         this.router = router;
         //this condition
         if (!router.hasRootController()) {
@@ -45,7 +59,7 @@ public class DefaultScreenNavigator implements ScreenNavigator {
     }
 
     @Override
-    public void clear() {
+    public void onDestroy(AppCompatActivity activity) {
         router = null;
     }
 }

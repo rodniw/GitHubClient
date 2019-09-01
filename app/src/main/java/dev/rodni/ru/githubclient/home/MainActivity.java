@@ -14,7 +14,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected Controller initialScreen() {
+    public Controller initialScreen() {
         return new TrendingReposController();
     }
 }

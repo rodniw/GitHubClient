@@ -24,9 +24,10 @@ import dev.rodni.ru.githubclient.di.Injector;
 import dev.rodni.ru.githubclient.di.ScreenInjector;
 import dev.rodni.ru.githubclient.lifecycle.ActivityLifecycleTask;
 import dev.rodni.ru.githubclient.ui.ActivityViewInterceptor;
+import dev.rodni.ru.githubclient.ui.RouterProvider;
 import dev.rodni.ru.githubclient.ui.ScreenNavigator;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements RouterProvider {
 
     private static String INSTANCE_ID_KEY = "instance_id";
 
@@ -64,7 +65,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
 
         router = Conductor.attachRouter(this, screenContainer, savedInstanceState);
-        screenNavigator.initWithRouter(router, initialScreen());
         //by this method we can get info about backstack changes
         monitorBackStack();
 
@@ -73,12 +73,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public Router getRouter() {
+        return router;
+    }
+
     @LayoutRes
     protected abstract int layoutRes();
 
     //because in the future we need to give to all activities
     //an opportunity to get their controllers
-    protected abstract Controller initialScreen();
+    public abstract Controller initialScreen();
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -132,7 +137,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        screenNavigator.clear();
         if (isFinishing()) {
             Injector.clearComponent(this);
         }
