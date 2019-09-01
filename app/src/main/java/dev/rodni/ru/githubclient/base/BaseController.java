@@ -10,14 +10,24 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
 import com.bluelinelabs.conductor.Controller;
+import com.bluelinelabs.conductor.ControllerChangeHandler;
+import com.bluelinelabs.conductor.ControllerChangeType;
+
+import java.util.Set;
+
+import javax.inject.Inject;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import dev.rodni.ru.githubclient.di.Injector;
+import dev.rodni.ru.githubclient.lifecycle.ScreenLifecycleTask;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
 public abstract class BaseController extends Controller {
+
+    @Inject
+    Set<ScreenLifecycleTask> screenLifecycleTasks;
 
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -52,6 +62,18 @@ public abstract class BaseController extends Controller {
         return v;
     }
 
+    //when controller pushed or added to the backstack
+    @Override
+    protected void onChangeStarted(@NonNull ControllerChangeHandler changeHandler, @NonNull ControllerChangeType changeType) {
+        for (ScreenLifecycleTask task : screenLifecycleTasks) {
+            if (changeType.isEnter) {
+                task.onEnterScope(getView());
+            } else {
+                task.onExitScope();
+            }
+        }
+    }
+
     @Override
     protected void onDestroyView(@NonNull View view) {
         //note
@@ -60,6 +82,14 @@ public abstract class BaseController extends Controller {
         if (unbinder != null) {
             unbinder.unbind();
             unbinder = null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        for (ScreenLifecycleTask task : screenLifecycleTasks) {
+            task.onDestroy();
         }
     }
 
