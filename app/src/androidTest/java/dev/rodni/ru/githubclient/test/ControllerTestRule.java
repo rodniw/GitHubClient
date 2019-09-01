@@ -1,14 +1,13 @@
 package dev.rodni.ru.githubclient.test;
 
 import android.app.Activity;
-import android.support.test.rule.ActivityTestRule;
 
 import dev.rodni.ru.githubclient.base.TestApplication;
 import dev.rodni.ru.githubclient.data.RepoRepository;
 import dev.rodni.ru.githubclient.data.TestRepoService;
 import dev.rodni.ru.githubclient.ui.TestScreenNavigator;
 
-
+//TODO decide what to do with ActivityTestRule
 public class ControllerTestRule<T extends Activity> extends ActivityTestRule<T> {
 
     public final TestScreenNavigator screenNavigator;

@@ -28,6 +28,7 @@ class MockResponseFactory {
         return MockResourceLoader.getResponseString(context, request.method(), endpointParts);
     }
 
+    //this gives an understanding does an url has some query parameter
     private String getEndpoint(Request request) {
         String url = request.url().toString();
         int queryParamStart = url.indexOf("?");

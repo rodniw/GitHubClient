@@ -11,10 +11,12 @@ import okhttp3.OkHttpClient;
 @Module
 public abstract class NetworkModule {
 
+    //providing mock interceptor to the ok http client
     @Provides
     @Singleton
-    static Call.Factory provideOkHttp() {
+    static Call.Factory provideOkHttp(MockInterceptor mockInterceptor) {
         return new OkHttpClient.Builder()
+                .addInterceptor(mockInterceptor)
                 .build();
     }
 
